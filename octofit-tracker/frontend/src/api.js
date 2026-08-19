@@ -5,10 +5,13 @@ const apiOrigin = codeSpaceName
 
 export const apiBaseUrl = `${apiOrigin}/api`
 
-export async function fetchCollection(component) {
-  const response = await fetch(`${apiBaseUrl}/${component}/`)
+export async function fetchCollection(componentOrUrl) {
+  const endpoint = componentOrUrl.startsWith('http')
+    ? componentOrUrl
+    : `${apiBaseUrl}/${componentOrUrl}/`
+  const response = await fetch(endpoint)
   if (!response.ok) {
-    throw new Error(`Unable to load ${component} (${response.status})`)
+    throw new Error(`Unable to load collection (${response.status})`)
   }
 
   const payload = await response.json()

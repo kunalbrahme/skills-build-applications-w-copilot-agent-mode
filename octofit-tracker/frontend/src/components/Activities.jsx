@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api.js'
 
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
+const activitiesEndpoint = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/'
+
 function Activities() {
   const [activities, setActivities] = useState([])
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchCollection('activities').then(setActivities).catch((problem) => setError(problem.message))
+    fetchCollection(activitiesEndpoint).then(setActivities).catch((problem) => setError(problem.message))
   }, [])
 
   return <DataPage eyebrow="ACTIVITY LOG" title="Keep moving." description="Every minute adds momentum.">
